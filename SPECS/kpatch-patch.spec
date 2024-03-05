@@ -1,17 +1,36 @@
 # Set to 1 if building an empty subscription-only package.
-%define empty_package		1
+%define empty_package		0
 
 #######################################################
 # Only need to update these variables and the changelog
 %define kernel_ver	5.14.0-362.8.1.el9_3
 %define kpatch_ver	0.9.9
-%define rpm_ver		0
-%define rpm_rel		0
+%define rpm_ver		1
+%define rpm_rel		2
 
 %if !%{empty_package}
 # Patch sources below. DO NOT REMOVE THIS LINE.
-Source100:		XXX.patch
-#Source101:		YYY.patch
+#
+# https://issues.redhat.com/browse/RHEL-15206
+Source100: CVE-2023-45871.patch
+#
+# https://issues.redhat.com/browse/RHEL-16978
+Source101: CVE-2023-5345.patch
+#
+# https://issues.redhat.com/browse/RHEL-16980
+Source102: CVE-2023-42753.patch
+#
+# https://issues.redhat.com/browse/RHEL-16310
+Source103: CVE-2023-3812.patch
+#
+# https://issues.redhat.com/browse/RHEL-17935
+Source104: CVE-2023-4622.patch
+#
+# https://issues.redhat.com/browse/RHEL-16628
+Source105: CVE-2023-4623.patch
+#
+# https://issues.redhat.com/browse/RHEL-12918
+Source106: CVE-2023-5178.patch
 # End of patch sources. DO NOT REMOVE THIS LINE.
 %endif
 
@@ -193,5 +212,16 @@ It is only a method to subscribe to the kpatch stream for kernel-%{kernel_ver}.
 %endif
 
 %changelog
+* Tue Jan 09 2024 Yannick Cote <ycote@redhat.com> [1-2.el9_3]
+- kernel: use after free in nvmet_tcp_free_crypto in NVMe [RHEL-12918] {CVE-2023-5178}
+- kernel: net/sched: sch_hfsc UAF [RHEL-16628] {CVE-2023-4623}
+- kernel: use after free in unix_stream_sendpage [RHEL-17935] {CVE-2023-4622}
+- kernel: tun: bugs for oversize packet when napi frags enabled in tun_napi_alloc_frags [RHEL-16310] {CVE-2023-3812}
+- kernel: netfilter: potential slab-out-of-bound access due to integer underflow [RHEL-16980] {CVE-2023-42753}
+
+* Thu Nov 30 2023 Yannick Cote <ycote@redhat.com> [1-1.el9_3]
+- kernel: use-after-free vulnerability in the smb client component [RHEL-16978] {CVE-2023-5345}
+- kernel: IGB driver inadequate buffer size for frames larger than MTU [RHEL-15206] {CVE-2023-45871}
+
 * Tue Oct 24 2023 Yannick Cote <ycote@redhat.com> [0-0.el9]
 - An empty patch to subscribe to kpatch stream for kernel-5.14.0-362.8.1.el9_3 [RHEL-14595]
