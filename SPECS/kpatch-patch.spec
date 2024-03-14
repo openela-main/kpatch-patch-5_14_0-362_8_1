@@ -6,7 +6,7 @@
 %define kernel_ver	5.14.0-362.8.1.el9_3
 %define kpatch_ver	0.9.9
 %define rpm_ver		1
-%define rpm_rel		2
+%define rpm_rel		3
 
 %if !%{empty_package}
 # Patch sources below. DO NOT REMOVE THIS LINE.
@@ -31,6 +31,9 @@ Source105: CVE-2023-4623.patch
 #
 # https://issues.redhat.com/browse/RHEL-12918
 Source106: CVE-2023-5178.patch
+#
+# https://issues.redhat.com/browse/RHEL-22114
+Source107: CVE-2024-0646.patch
 # End of patch sources. DO NOT REMOVE THIS LINE.
 %endif
 
@@ -212,6 +215,9 @@ It is only a method to subscribe to the kpatch stream for kernel-%{kernel_ver}.
 %endif
 
 %changelog
+* Thu Feb 22 2024 Yannick Cote <ycote@redhat.com> [1-3.el9_3]
+- kernel: ktls overwrites readonly memory pages when using function splice with a ktls socket as destination [RHEL-22114] {CVE-2024-0646}
+
 * Tue Jan 09 2024 Yannick Cote <ycote@redhat.com> [1-2.el9_3]
 - kernel: use after free in nvmet_tcp_free_crypto in NVMe [RHEL-12918] {CVE-2023-5178}
 - kernel: net/sched: sch_hfsc UAF [RHEL-16628] {CVE-2023-4623}
